@@ -203,7 +203,11 @@ class SyslogLogger
       end
     end
 
-    SYSLOG.send LEVEL_LOGGER_MAP[severity], clean(message)
+    message.each_line do |line|
+      unless line.strip.empty?
+        SYSLOG.send LEVEL_LOGGER_MAP[severity], clean(line)
+      end
+    end
     return true
   end
 
